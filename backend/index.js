@@ -8,15 +8,8 @@ app.use(cors());
 // we use multer for formData, so don't use bodyParser for multipart
 app.use(express.json()); // for JSON endpoints (not multipart)
 
-// Prefer 127.0.0.1 to avoid localhost resolving to IPv6 (::1) on some systems
-// which can cause ECONNREFUSED when MongoDB is only listening on IPv4.
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/taskdb';
-// Mongoose v6+ and MongoDB Node.js Driver 4+ set the recommended parser/topology
-// options by default. Passing `useNewUrlParser` or `useUnifiedTopology` is
-// deprecated and has no effect, so call connect without those options.
-// Connect without deprecated options (Mongoose v6+ uses sensible defaults).
-// Add more helpful diagnostics and a small retry loop so transient issues
-// (or starting MongoDB after the app) are handled gracefully.
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://milan:Ytt2x7yoO7u9oL3Z@cluster0.7zxiel4.mongodb.net/task-manager?retryWrites=true';
+
 async function connectWithRetry() {
   try {
     await mongoose.connect(MONGO_URI);
